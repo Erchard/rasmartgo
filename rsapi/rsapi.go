@@ -6,7 +6,7 @@ import (
 	"net"
 )
 
-func main() {
+func Main() {
 	pub_key := "50f86b12dbdb50ae9197980787198e278dc9ec94ec8491e3b79df03157ad0bd1"
 	get_info := "0100" + "20000000" + pub_key
 
