@@ -32,9 +32,9 @@ func Request(raw_string string, arr bool) ([]byte, []byte) {
 		get_info := "0100" + "20000000" + pub_key
 
 		Request(get_info, false)
+		log.Println("Connected!")
 	}
 
-	log.Println("Connected!")
 	len_n, err := connect.Write(request)
 	if err != nil {
 		log.Fatal("Send request error")

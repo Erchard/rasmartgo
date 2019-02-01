@@ -12,7 +12,7 @@ func TestRequest(t *testing.T) {
 
 	get_transactions := "0d00" + "40000000" + "e85d84b9609640419c3fc3652e593e0d859e28eea4aeaeffba9decce5f46ca793d049a4d0c17d76b050a812e1292f3e6b5283b9944ad730924e69fc357b96493" + "0000000000000000" + "0100"
 
-	commands := [4]string{get_counters, get_blocks, get_transactions}
+	commands := [3]string{get_counters, get_blocks, get_transactions}
 
 	for i, comm := range commands {
 		log.Println("i: ", i)
