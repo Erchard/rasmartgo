@@ -6,5 +6,5 @@ type Counters struct {
 }
 
 func GetCounters() Counters {
-
+	return Counters{0, 0}
 }
