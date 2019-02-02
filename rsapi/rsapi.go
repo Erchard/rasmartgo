@@ -21,7 +21,7 @@ func Request(raw_string string, arr bool) ([]byte, []byte) {
 	}
 	if connect == nil {
 		conn, err := net.Dial("tcp", "95.84.138.232:38101")
-		defer conn.Close()
+		//defer conn.Close()
 		if err != nil {
 			log.Fatal("Connection error")
 			log.Fatal(err)
