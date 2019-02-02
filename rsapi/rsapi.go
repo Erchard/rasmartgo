@@ -1,6 +1,7 @@
 package rsapi
 
 import (
+	"bytes"
 	"encoding/hex"
 	"log"
 	"net"
@@ -8,13 +9,12 @@ import (
 
 var connect net.Conn = nil
 
-func Request(raw_string string, arr bool) ([]byte, []byte) {
+func Request(raw_string string, arr bool) []byte {
 
 	terminate := "0000" + "00000000"
 
-	log.Printf("Request: %s", raw_string)
-
 	request, err := hex.DecodeString(raw_string + terminate)
+
 	if err != nil {
 		log.Fatal("Parse pubkey error")
 		log.Fatal(err)
@@ -40,8 +40,28 @@ func Request(raw_string string, arr bool) ([]byte, []byte) {
 		log.Fatal("Send request error")
 		log.Fatal(err)
 	}
-	log.Println("conn len: ", len_n)
+	log.Printf("Request %d: %x", len_n, request)
 
+	//var result []byte
+	//t, _ := hex.DecodeString(terminate)
+	//for result == nil || len(result) < 6 ||
+	//	!bytes.Equal(result[len(result)-6:], t) {
+	//	buff := read(connect)
+	//	result = append(result, buff...)
+	//}
+	//return result
+
+	var result []byte
+	t, _ := hex.DecodeString(terminate)
+	var buff []byte
+	for !bytes.Equal(buff, t) {
+		buff = read(connect)
+		result = append(result, buff...)
+	}
+	return result
+}
+
+func read(connect net.Conn) []byte {
 	buff := make([]byte, 1024)
 	n, err := connect.Read(buff)
 	if err != nil {
@@ -49,16 +69,5 @@ func Request(raw_string string, arr bool) ([]byte, []byte) {
 		log.Fatal(err)
 	}
 	log.Printf("Receive: %x", buff[:n])
-
-	if arr {
-		arrbuff := make([]byte, 1024)
-		n, err := connect.Read(arrbuff)
-		if err != nil {
-			log.Fatal("Responce error")
-			log.Fatal(err)
-		}
-		log.Printf("Receive: %x", arrbuff[:n])
-		return buff[:n], arrbuff[:n]
-	}
-	return buff[:n], nil
+	return buff[:n]
 }
