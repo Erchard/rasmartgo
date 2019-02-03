@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/Erchard/rasmartgo/counters"
+	"github.com/Erchard/rasmartgo/controller"
 	"log"
 )
 
 func main() {
 	log.Println("Hello Rasmart!")
-	counters.GetCounters()
+	controller.ServerStart()
 	log.Println("End")
 
 }
