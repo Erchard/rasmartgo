@@ -16,7 +16,7 @@ func TestRequest(t *testing.T) {
 
 	for i, comm := range commands {
 		log.Println("i: ", i)
-		Request(comm, i > 0)
+		Request(comm)
 
 	}
 }

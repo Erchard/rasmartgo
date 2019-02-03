@@ -9,7 +9,7 @@ import (
 
 var connect net.Conn = nil
 
-func Request(raw_string string, arr bool) []byte {
+func Request(raw_string string) []byte {
 
 	terminate := "0000" + "00000000"
 
@@ -31,7 +31,7 @@ func Request(raw_string string, arr bool) []byte {
 		pub_key := "50f86b12dbdb50ae9197980787198e278dc9ec94ec8491e3b79df03157ad0bd1"
 		get_info := "0100" + "20000000" + pub_key
 
-		Request(get_info, false)
+		Request(get_info)
 		log.Println("Connected!")
 	}
 
