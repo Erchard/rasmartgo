@@ -2,6 +2,7 @@ package rsapi
 
 import (
 	"bytes"
+	"encoding/binary"
 	"encoding/hex"
 	"log"
 	"net"
@@ -21,7 +22,7 @@ func Request(raw_string string) []byte {
 	}
 	if connect == nil {
 		conn, err := net.Dial("tcp", "95.84.138.232:38101")
-		//defer conn.Close()
+		defer conn.Close()
 		if err != nil {
 			log.Fatal("Connection error")
 			log.Fatal(err)
@@ -70,4 +71,25 @@ func read(connect net.Conn) []byte {
 	}
 	log.Printf("Receive: %x", buff[:n])
 	return buff[:n]
+}
+
+func responceProcess(connect net.Conn) {
+
+	commandCode := make([]byte, 2)
+	n, err := connect.Read(commandCode)
+	if n < 2 || err != nil {
+		log.Fatal("Error responce n = ", n)
+	}
+
+	switch comm := binary.LittleEndian.Uint16(commandCode[:]); comm {
+	case 0:
+		protocol.Terminate(connect)
+	case 2:
+		protocol.SendInfo(connect)
+	case 6:
+		protocol.SendCounters(connect)
+	default:
+		log.Fatal("Unknown command from srver")
+	}
+
 }

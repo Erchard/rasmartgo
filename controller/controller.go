@@ -9,10 +9,11 @@ import (
 )
 
 func ServerStart() {
-
+	log.Println("Start Rasmart blockchain explorer on http://localhost:8080/")
 	http.HandleFunc("/counters", countersHandler)
 	http.HandleFunc("/", mainHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
+
 }
 
 func countersHandler(writer http.ResponseWriter, request *http.Request) {
@@ -181,17 +182,20 @@ func mainHandler(writer http.ResponseWriter, request *http.Request) {
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
 <script>
-    $.ajax({
-        url: "http://localhost:8080/counters", // path to file
-        dataType: 'json', // type of file (text, json, xml, etc)
-        success: function (data) { // callback for successful completion
-            $("#blocks_number").html(data.blocks);
-            $("#tx_numbers").html(data.transactions);
-        },
-        error: function () { // callback if there's an error
-            console.log("error");
-        }
-    });
+
+    setInterval(function () {
+        $.ajax({
+            url: "http://localhost:8080/counters", // path to file
+            dataType: 'json', // type of file (text, json, xml, etc)
+            success: function (data) { // callback for successful completion
+                $("#blocks_number").html(data.blocks);
+                $("#tx_numbers").html(data.transactions);
+            },
+            error: function () { // callback if there's an error
+                console.log("error");
+            }
+        });
+    }, 1000);
 </script>
 </body>
 </html>

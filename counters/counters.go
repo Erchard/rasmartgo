@@ -17,6 +17,6 @@ func GetCounters() Counters {
 
 	var bl_num uint16 = binary.LittleEndian.Uint16(raw[6:14])
 	var tx_num uint16 = binary.LittleEndian.Uint16(raw[14:22])
-
+	rsapi.Request("0000" + "00000000")
 	return Counters{bl_num, tx_num}
 }
