@@ -21,21 +21,21 @@ func Request(raw_string string) []byte {
 		log.Fatal("Parse pubkey error")
 		log.Fatal(err)
 	}
-	if connect == nil {
-		conn, err := net.Dial("tcp", "95.84.138.232:38101")
-		defer conn.Close()
-		if err != nil {
-			log.Fatal("Connection error")
-			log.Fatal(err)
-		}
-		connect = conn
-
-		pub_key := "50f86b12dbdb50ae9197980787198e278dc9ec94ec8491e3b79df03157ad0bd1"
-		get_info := "0100" + "20000000" + pub_key
-
-		Request(get_info)
-		log.Println("Connected!")
+	//if connect == nil {
+	conn, err := net.Dial("tcp", "95.84.138.232:38101")
+	defer conn.Close()
+	if err != nil {
+		log.Fatal("Connection error")
+		log.Fatal(err)
 	}
+	connect = conn
+
+	pub_key := "50f86b12dbdb50ae9197980787198e278dc9ec94ec8491e3b79df03157ad0bd1"
+	get_info := "0100" + "20000000" + pub_key
+
+	Request(get_info)
+	log.Println("Connected!")
+	//}
 
 	len_n, err := connect.Write(request)
 	if err != nil {
