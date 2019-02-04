@@ -23,7 +23,7 @@ func Request(raw_string string) []byte {
 	}
 	if connect == nil {
 		conn, err := net.Dial("tcp", "95.84.138.232:38101")
-		defer conn.Close()
+		//defer conn.Close()
 		if err != nil {
 			log.Fatal("Connection error")
 			log.Fatal(err)
@@ -60,7 +60,7 @@ func Request(raw_string string) []byte {
 		buff = read(connect)
 		result = append(result, buff...)
 	}
-	connect = nil
+
 	return result
 }
 
@@ -75,21 +75,36 @@ func read(connect net.Conn) []byte {
 	return buff[:n]
 }
 
-func responceProcess(connect net.Conn) {
+func responceProcess() {
 
-	commandCode := make([]byte, 2)
-	n, err := connect.Read(commandCode)
-	if n < 2 || err != nil {
+	head := make([]byte, 6)
+	n, err := connect.Read(head)
+	if n < 6 || err != nil {
 		log.Fatal("Error responce n = ", n)
 	}
+	argumentsLen := binary.LittleEndian.Uint16(head[2:6])
 
-	switch comm := binary.LittleEndian.Uint16(commandCode[:]); comm {
+	args := make([]byte, argumentsLen)
+
+	buff := make([]byte, 1024)
+	var offset uint16 = 0
+	for offset < argumentsLen {
+		n, err := connect.Read(buff)
+		if err != nil {
+			log.Fatal("Error responce n = ", n)
+		}
+		newOffset := offset + uint16(n)
+		copy(args[offset:newOffset], buff[:n])
+		offset = newOffset
+	}
+
+	switch comm := binary.LittleEndian.Uint16(head[:2]); comm {
 	case 0:
-		protocol.Terminate(connect)
+		protocol.Terminate(args)
 	case 2:
-		protocol.SendInfo(connect)
+		protocol.SendInfo(args)
 	case 6:
-		protocol.SendCounters(connect)
+		protocol.SendCounters(args)
 	default:
 		log.Fatal("Unknown command from srver")
 	}

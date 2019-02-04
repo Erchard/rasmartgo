@@ -1,7 +1,5 @@
 package protocol
 
-import "net"
-
-func SendCounters(connect net.Conn) {
+func SendCounters(args []byte) {
 
 }
