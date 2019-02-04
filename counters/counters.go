@@ -10,6 +10,8 @@ type Counters struct {
 	Transactions uint16 `json:"transactions"`
 }
 
+var counters = Counters{0, 0}
+
 func GetCounters() Counters {
 
 	const get_counters = "0500" + "00000000"
@@ -19,4 +21,9 @@ func GetCounters() Counters {
 	var tx_num uint16 = binary.LittleEndian.Uint16(raw[14:22])
 	rsapi.Request("0000" + "00000000")
 	return Counters{bl_num, tx_num}
+}
+
+func SetCounters(blocks uint16, transactions uint16) {
+	counters.Blocks = blocks
+	counters.Transactions = transactions
 }

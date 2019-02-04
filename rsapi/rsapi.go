@@ -82,18 +82,18 @@ func responceProcess() {
 	if n < 6 || err != nil {
 		log.Fatal("Error responce n = ", n)
 	}
-	argumentsLen := binary.LittleEndian.Uint16(head[2:6])
+	argumentsLen := binary.LittleEndian.Uint32(head[2:6])
 
 	args := make([]byte, argumentsLen)
 
 	buff := make([]byte, 1024)
-	var offset uint16 = 0
+	var offset uint32 = 0
 	for offset < argumentsLen {
 		n, err := connect.Read(buff)
 		if err != nil {
 			log.Fatal("Error responce n = ", n)
 		}
-		newOffset := offset + uint16(n)
+		newOffset := offset + uint32(n)
 		copy(args[offset:newOffset], buff[:n])
 		offset = newOffset
 	}

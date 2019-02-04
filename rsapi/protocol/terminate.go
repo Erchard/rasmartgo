@@ -1,5 +1,9 @@
 package protocol
 
-func Terminate(args []byte) {
+import "log"
 
+func Terminate(args []byte) {
+	if len(args) > 0 {
+		log.Fatal("Terminate command with arguments")
+	}
 }
