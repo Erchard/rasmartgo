@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
+	"github.com/Erchard/rasmartgo/rsapi/protocol"
 	"log"
 	"net"
 )
